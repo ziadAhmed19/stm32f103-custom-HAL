@@ -13,7 +13,9 @@
 // Renaming Ports
 typedef enum {
 	PORTA = 0,
-	PORTB = 1
+	PORTB = 1,
+	PORTC = 2
+
 }GPIO_PORTS;
 
 // Renaming Input Types
