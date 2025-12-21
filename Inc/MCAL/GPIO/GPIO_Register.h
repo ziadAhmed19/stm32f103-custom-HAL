@@ -4,6 +4,13 @@
  *  Created on: Dec 18, 2025
  *      Author: ziad-ahmed
  *
+ *	GPIOx_CRL Structure
+ *	Bits:  31-28   27-24   23-20   19-16   15-12   11-8    7-4     3-0
+ *	Pin:   PIN7    PIN6    PIN5    PIN4    PIN3    PIN2    PIN1    PIN0
+ *
+ *	GPIOx_CRH Structure
+ *	Bits:  31-28   27-24   23-20   19-16   15-12   11-8    7-4     3-0
+ *	Pin:   PIN15    PIN14    PIN13    PIN12    PIN11    PIN10    PIN9    PIN08
  */
 
 #ifndef MCAL_GPIO_GPIO_REGISTER_H_

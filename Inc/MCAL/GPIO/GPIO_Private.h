@@ -8,5 +8,4 @@
 #define MCAL_GPIO_GPIO_PRIVATE_H_
 
 
-
 #endif /* MCAL_GPIO_GPIO_PRIVATE_H_ */

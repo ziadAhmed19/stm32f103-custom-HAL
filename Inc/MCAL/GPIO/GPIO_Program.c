@@ -20,63 +20,192 @@
 #include 	"GPIO_Interface.h"
 #include 	"GPIO_Private.h"
 
+/*
+ * Step 1: Choose CRL or CRH and calculate bit position
+ * Step 2: Clear the 4 bits MODE and CNF to this pin
+ * Step 3: Set the Configuration
+ */
+stm_err_t GPIO_INPUT_CONFIG(GPIO_PORTS ePort, uint8_t nPin, INPUT_CNF eCnf) {
 
-stm_err_t GPIO_INPUT_CONFIG(GPIO_PORTS port,INPUT_MODE mode){
+	// Error Checking
+    if (nPin > 15)
+    	return STM_ERROR;
 
-	switch (mode) {
-		case FLOATING:
+    volatile uint32_t* pConfigReg;
+    uint8_t nBitPos;
+    // STEP 1
+    if (nPin < 8) {
+    	// Setting the POS
+        nBitPos = nPin * 4;
+        // Port Selection
+        switch(ePort) {
+            case PORTA:
+            	pConfigReg = &GPIOA_CRL;
+            	break;
 
-			return STM_OK;
-			break;
+            case PORTB:
+            	pConfigReg = &GPIOB_CRL;
+            	break;
 
-		case PULL_UP:
+            case PORTC:
+            	pConfigReg = &GPIOC_CRL;
+            	break;
 
-			return STM_OK;
-			break;
+            default:
+            	return STM_ERROR;
+        }
+    }
 
+    else {
+    	// Setting the POS
+        nBitPos = (nPin - 8) * 4;
+        // Port Selection
+        switch(ePort) {
+            case PORTA:
+            	pConfigReg = &GPIOA_CRH;
+            	break;
 
-		case PULL_DOWN:
+            case PORTB:
+            	pConfigReg = &GPIOB_CRH;
+            	break;
 
-			return STM_OK;
-			break;
+            case PORTC:
+            	pConfigReg = &GPIOC_CRH;
+            	break;
 
-		case ANALOG:
+            default:
+            	return STM_ERROR;
+        }
+    }
+    // STEP 2
+    CLR_BITS(*pConfigReg,0xF,nBitPos);
+    // STEP 3
+    uint8_t nConfigValue;
+    switch(eCnf) {
+        case FLOATING:
+        	nConfigValue = 0b0100;
+        	break;
 
-			return STM_OK;
-			break;
+        case PULL_UP:
+        	nConfigValue = 0b1000;
+        	break;
 
-		default:
+        case PULL_DOWN:
+        	nConfigValue = 0b1000;
+        	break;
 
-			return STM_ERROR;
-			break;
-	}
+        case ANALOG:
+        	nConfigValue = 0b0000;
+        	break;
+
+        default:
+        	return STM_ERROR;
+    }
+
+    WRITE_BITS(*pConfigReg, nConfigValue, nBitPos);
+
+    return STM_OK;
 }
 
-stm_err_t GPIO_OUTPUT_CONFIG(GPIO_PORTS port,OUTPUT_MODE mode){
-	switch (mode) {
-		case OPEN_DRAIN:
+/*
+ * Step 1: Choose CRL or CRH and calculate bit position
+ * Step 2: Choose Output MODE bits
+ * Step 3: Set the Configuration
+ */
+stm_err_t GPIO_OUTPUT_CONFIG(GPIO_PORTS ePort, uint8_t nPin, OUTPUT_MODE eMode, OUTPUT_CNF eCnf){
 
-			return STM_OK;
-			break;
+	// Error Checking
+	    if (nPin > 15)
+	    	return STM_ERROR;
 
-		case PUSH_PULL:
+	    volatile uint32_t* pConfigReg;
+	    uint8_t nBitPos;
+	    // STEP 1: Choose CRL or CRH and calculate bit position
+	    if (nPin < 8) {
+	    	// Setting the POS
+	        nBitPos = nPin * 4;
+	        // Port Selection
+	        switch(ePort) {
+	            case PORTA:
+	            	pConfigReg = &GPIOA_CRL;
+	            	break;
 
-			return STM_OK;
-			break;
+	            case PORTB:
+	            	pConfigReg = &GPIOB_CRL;
+	            	break;
 
-		case ALT_FN_PUSH_PULL:
+	            case PORTC:
+	            	pConfigReg = &GPIOC_CRL;
+	            	break;
 
-			return STM_OK;
-			break;
+	            default:
+	            	return STM_ERROR;
+	        }
+	    }
 
-		case ALT_FN_OPEN_DRAIN:
+	    else {
+	    	// Setting the POS
+	        nBitPos = (nPin - 8) * 4;
+	        // Port Selection
+	        switch(ePort) {
+	            case PORTA:
+	            	pConfigReg = &GPIOA_CRH;
+	            	break;
 
-			return STM_OK;
-			break;
+	            case PORTB:
+	            	pConfigReg = &GPIOB_CRH;
+	            	break;
 
-		default:
+	            case PORTC:
+	            	pConfigReg = &GPIOC_CRH;
+	            	break;
 
-			return STM_ERROR;
-			break;
-	}
-}
+	            default:
+	            	return STM_ERROR;
+	        }
+	    }
+	    // STEP 2: Choose Output MODE bits
+	    uint8_t nConfigValue;
+
+	    switch (eMode) {
+			case MAX_OUTPUT_SPEED_10MHZ:
+				nConfigValue = 0b0001;
+				break;
+
+			case MAX_OUTPUT_SPEED_2MHZ:
+				nConfigValue = 0b0010;
+				break;
+
+			case MAX_OUTPUT_SPEED_50MHZ:
+				nConfigValue = 0b0011;
+				break;
+
+			default:
+				return STM_ERROR;
+				break;
+		}
+	    WRITE_BITS(*pConfigReg,nConfigValue,nBitPos);
+	    // STEP 3: Set the Configuration
+	    uint8_t nConfig;
+
+	    switch (eCnf) {
+			case OPEN_DRAIN:
+
+				break;
+
+			case PUSH_PULL:
+
+				break;
+
+			case ALT_FN_PUSH_PULL:
+
+				break;
+
+			case ALT_FN_OPEN_DRAIN:
+
+				break;
+			default:
+				break;
+		}
+
+return STM_OK;}
