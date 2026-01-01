@@ -17,7 +17,7 @@ stm_err_t GPIO_INPUT_CONFIG(GPIO_PORTS ePort, uint8_t nPin, INPUT_CNF eCnf) {
 
 	// Error Checking
     if (nPin > 15)
-    	return STM_ERROR;
+    	return STM_ERR_INVALID_SIZE;
 
     volatile uint32_t* pConfigReg;
     volatile uint32_t* pODR_Reg;
@@ -44,7 +44,7 @@ stm_err_t GPIO_INPUT_CONFIG(GPIO_PORTS ePort, uint8_t nPin, INPUT_CNF eCnf) {
             	break;
 
             default:
-            	return STM_ERROR;
+            	return STM_ERR_INVALID_ARG;
         }
     }
 
@@ -69,7 +69,7 @@ stm_err_t GPIO_INPUT_CONFIG(GPIO_PORTS ePort, uint8_t nPin, INPUT_CNF eCnf) {
             	break;
 
             default:
-            	return STM_ERROR;
+            	return STM_ERR_INVALID_ARG;
         }
     }
     // STEP 2
@@ -96,7 +96,7 @@ stm_err_t GPIO_INPUT_CONFIG(GPIO_PORTS ePort, uint8_t nPin, INPUT_CNF eCnf) {
         	break;
 
         default:
-        	return STM_ERROR;
+        	return STM_ERR_INVALID_ARG;
     }
 
     WRITE_BITS(*pConfigReg, nConfigValue, nBitPos);
@@ -107,26 +107,25 @@ stm_err_t GPIO_INPUT_CONFIG(GPIO_PORTS ePort, uint8_t nPin, INPUT_CNF eCnf) {
 stm_err_t GPIO_INPUT_READ(GPIO_PORTS ePort, uint8_t nPin){
 
 	if(nPin > 15)
-		return STM_ERROR;
+		return STM_ERR_INVALID_SIZE;
 
 	switch (ePort) {
 		case PORTA:
-			GET_BIT(GPIOA_IDR,nPin);
+			return GET_BIT(GPIOA_IDR,nPin);
 			break;
 
 		case PORTB:
-			GET_BIT(GPIOB_IDR,nPin);
+			return GET_BIT(GPIOB_IDR,nPin);
 			break;
 
 		case PORTC:
-			GET_BIT(GPIOC_IDR,nPin);
+			return GET_BIT(GPIOC_IDR,nPin);
 			break;
 
 		default:
-			return STM_ERROR;
+			return STM_ERR_INVALID_ARG;
 			break;
 	}
-	return STM_OK;
 }
 
 /*
@@ -139,7 +138,7 @@ stm_err_t GPIO_OUTPUT_CONFIG(GPIO_PORTS ePort, uint8_t nPin, OUTPUT_MODE eMode, 
 
 	// Error Checking
 	    if (nPin > 15)
-	    	return STM_ERROR;
+	    	return STM_ERR_INVALID_SIZE;
 
 	    volatile uint32_t* pConfigReg;
 	    uint8_t nBitPos;
@@ -162,7 +161,7 @@ stm_err_t GPIO_OUTPUT_CONFIG(GPIO_PORTS ePort, uint8_t nPin, OUTPUT_MODE eMode, 
 	            	break;
 
 	            default:
-	            	return STM_ERROR;
+	            	return STM_ERR_INVALID_ARG;
 	        }
 	    }
 
@@ -184,7 +183,7 @@ stm_err_t GPIO_OUTPUT_CONFIG(GPIO_PORTS ePort, uint8_t nPin, OUTPUT_MODE eMode, 
 	            	break;
 
 	            default:
-	            	return STM_ERROR;
+	            	return STM_ERR_INVALID_ARG;
 	        }
 	    }
 	    // STEP 2: Choose Output MODE bits
@@ -204,7 +203,7 @@ stm_err_t GPIO_OUTPUT_CONFIG(GPIO_PORTS ePort, uint8_t nPin, OUTPUT_MODE eMode, 
 				break;
 
 			default:
-				return STM_ERROR;
+				return STM_ERR_INVALID_ARG;
 				break;
 		}
 	    // STEP 3: Set the Configuration
@@ -228,7 +227,7 @@ stm_err_t GPIO_OUTPUT_CONFIG(GPIO_PORTS ePort, uint8_t nPin, OUTPUT_MODE eMode, 
 				break;
 
 			default:
-				return STM_ERROR;
+				return STM_ERR_INVALID_ARG;
 				break;
 		}
 	    // STEP 4
@@ -239,6 +238,7 @@ stm_err_t GPIO_OUTPUT_CONFIG(GPIO_PORTS ePort, uint8_t nPin, OUTPUT_MODE eMode, 
 	    CLR_BITS(*pConfigReg, 0xF, nBitPos);
 	    // Write new Config
 	    WRITE_BITS(*pConfigReg, nConfigVal, nBitPos);
-return STM_OK;}
+	    return STM_OK;
+}
 
 

@@ -11,6 +11,7 @@
 // INCLUDES
 
 #include "BitMath.h"
+#include "stm_err_t.h"
 #include "GPIO_Register.h"
 #include <stdint.h>
 

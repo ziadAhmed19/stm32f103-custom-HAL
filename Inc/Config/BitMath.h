@@ -25,12 +25,6 @@
     REG |=((VAL)<<(POS));	\
 } while(0)
 
-//DATA TYPES
-typedef enum{
-	STM_ERROR 	= -1,
-	STM_OK		= 0
-}stm_err_t;
-
 
 
 #endif /* CONFIG_BITMATH_H_ */
