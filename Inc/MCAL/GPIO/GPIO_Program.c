@@ -256,11 +256,34 @@ stm_err_t GPIO_OUTPUT_WRITE(GPIO_PORTS ePort, uint8_t nPin, logicLevel_t logicLe
     }
 
     switch(logicLevel){
-    	case LOW: 	*pPortRegister = (1 << (nPin+16)); break;
-    	case HIGH: 	*pPortRegister = (1 << (nPin)); break;
+    	case LOW: 	*pPortRegister = (1U << (nPin+16)); break;
+    	case HIGH: 	*pPortRegister = (1U << (nPin)); break;
 
     	default: return STM_ERR_INVALID_ARG ;
     }
 
     return STM_OK;
+}
+
+stm_err_t GPIO_OUTPUT_TOGGLE(GPIO_PORTS ePort, uint8_t nPin){
+    if (nPin > 15)
+    	return STM_ERR_INVALID_SIZE;
+
+	 volatile uint32_t* pPortRegister;
+	 volatile uint32_t* pPortOutputDataRegister;
+
+	    switch(ePort){
+	    	case PORTA: pPortRegister = &GPIOA_BSRR; pPortOutputDataRegister = &GPIOA_ODR;  break;
+	    	case PORTB: pPortRegister = &GPIOB_BSRR; pPortOutputDataRegister = &GPIOB_ODR; 	break;
+	    	case PORTC: pPortRegister = &GPIOC_BSRR; pPortOutputDataRegister = &GPIOC_ODR;	break;
+
+	    	default: return STM_ERR_INVALID_ARG ;
+	    }
+
+	if(GET_BIT(*pPortOutputDataRegister, nPin))
+		*pPortRegister = (1U << (nPin+16)); // reset
+	else
+	    *pPortRegister = (1U << (nPin)); // set
+
+	return STM_OK;
 }
