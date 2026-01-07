@@ -8,6 +8,7 @@
 #include "stm_err_t.h"
 
 stm_err_to_name(stm_err_t ERROR_CODE){
+
 	switch(ERROR_CODE){
 
 		case STM_ERR_INVALID_ARG:	break;
@@ -21,4 +22,11 @@ stm_err_to_name(stm_err_t ERROR_CODE){
 
 
 	}
+}
+
+STM_CHECK_ERROR(stm_err_t returned_valueFrom_function){
+
+	if(returned_valueFrom_function != STM_OK)
+		while(1){/*do nothing*/}
+
 }

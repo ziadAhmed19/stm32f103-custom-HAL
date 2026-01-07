@@ -27,6 +27,7 @@ typedef int stm_err_t;
 #define STM_ERR_NOT_FINISHED	0x15 // Operation Has Not Fully Completed
 
 
-
+// Function Prototypes
+stm_err_to_name(stm_err_t ERROR_CODE);
 
 #endif /* CONFIG_STM_ERR_T_H_ */
