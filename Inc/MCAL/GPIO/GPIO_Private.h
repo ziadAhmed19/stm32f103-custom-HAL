@@ -7,5 +7,7 @@
 #ifndef MCAL_GPIO_GPIO_PRIVATE_H_
 #define MCAL_GPIO_GPIO_PRIVATE_H_
 
+#include "GPIO_Config.h"
+
 
 #endif /* MCAL_GPIO_GPIO_PRIVATE_H_ */
