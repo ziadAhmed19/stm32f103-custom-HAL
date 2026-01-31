@@ -11,12 +11,9 @@
 
 
 // FUNCTION PROTOTYPES
-
-stm_err_t GPIO_INPUT_CONFIG(GPIO_PORTS ePort, uint8_t nPin, INPUT_CNF eMode);
-stm_err_t GPIO_INPUT_READ(GPIO_PORTS ePort, uint8_t nPin);
-
-stm_err_t GPIO_OUTPUT_CONFIG(GPIO_PORTS ePort, uint8_t nPin, OUTPUT_MODE eMode, OUTPUT_CNF eCnf);
-stm_err_t GPIO_OUTPUT_WRITE(GPIO_PORTS ePort, uint8_t nPin, logicLevel_t logicLevel);
-stm_err_t GPIO_OUTPUT_TOGGLE(GPIO_PORTS ePort, uint8_t nPin);
+stm_err_t GPIO_ConfigPin(GPIO_Direction_t direction, GPIO_Config_t *config);
+stm_err_t GPIO_READ(GPIO_PORTS ePort, uint8_t nPin);
+stm_err_t GPIO_WRITE(GPIO_PORTS ePort, uint8_t nPin, logicLevel_t logicLevel);
+stm_err_t GPIO_TOGGLE(GPIO_PORTS ePort, uint8_t nPin);
 
 #endif /* MCAL_GPIO_GPIO_INTERFACE_H_ */

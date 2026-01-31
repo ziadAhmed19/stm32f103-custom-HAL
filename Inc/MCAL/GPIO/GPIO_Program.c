@@ -5,8 +5,8 @@
  *      Author: ziad-ahmed
  *
  */
-#include 	"GPIO_Interface.h"
 #include 	"GPIO_Private.h"
+#include 	"GPIO_Interface.h"
 
 /*
  * Step 1: Choose CRL or CRH and calculate bit position
@@ -104,7 +104,7 @@ stm_err_t GPIO_INPUT_CONFIG(GPIO_PORTS ePort, uint8_t nPin, INPUT_CNF eCnf) {
     return STM_OK;
 }
 
-stm_err_t GPIO_INPUT_READ(GPIO_PORTS ePort, uint8_t nPin){
+stm_err_t GPIO_READ(GPIO_PORTS ePort, uint8_t nPin){
 
 	if(nPin > 15)
 		return STM_ERR_INVALID_SIZE;
@@ -141,7 +141,6 @@ stm_err_t GPIO_OUTPUT_CONFIG(GPIO_PORTS ePort, uint8_t nPin, OUTPUT_MODE eMode, 
 	    	return STM_ERR_INVALID_SIZE;
 
 	    volatile uint32_t* pConfigReg ;
-	    volatile uint32_t* pLCKReg ;
 	    uint8_t nConfigVal;
 	    uint8_t nConfigBits;
 	    uint8_t nModeBits;
@@ -154,13 +153,13 @@ stm_err_t GPIO_OUTPUT_CONFIG(GPIO_PORTS ePort, uint8_t nPin, OUTPUT_MODE eMode, 
 	        nBitPos = nPin * 4;
 	        // Port Selection
 	        switch(ePort) {
-	            case PORTA: pConfigReg 	= &GPIOA_CRL; pLCKReg 	= &GPIOA_LCKR ;
+	            case PORTA: pConfigReg 	= &GPIOA_CRL;
 	            	break;
 
-	            case PORTB: pConfigReg 	= &GPIOB_CRL; pLCKReg 	= &GPIOB_LCKR ;
+	            case PORTB: pConfigReg 	= &GPIOB_CRL;
 	            	break;
 
-	            case PORTC: pConfigReg = &GPIOC_CRL; pLCKReg 	= &GPIOC_LCKR ;
+	            case PORTC: pConfigReg = &GPIOC_CRL;
 	            	break;
 
 	            default: return STM_ERR_INVALID_ARG;
@@ -172,13 +171,13 @@ stm_err_t GPIO_OUTPUT_CONFIG(GPIO_PORTS ePort, uint8_t nPin, OUTPUT_MODE eMode, 
 	        nBitPos = (nPin - 8) * 4;
 	        // Port Selection
 	        switch(ePort) {
-	            case PORTA: pConfigReg = &GPIOA_CRH; pLCKReg 	= &GPIOA_LCKR ;
+	            case PORTA: pConfigReg = &GPIOA_CRH;
 	            	break;
 
-	            case PORTB: pConfigReg = &GPIOB_CRH; pLCKReg 	= &GPIOB_LCKR ;
+	            case PORTB: pConfigReg = &GPIOB_CRH;
 	            	break;
 
-	            case PORTC: pConfigReg = &GPIOC_CRH; pLCKReg 	= &GPIOC_LCKR ;
+	            case PORTC: pConfigReg = &GPIOC_CRH;
 	            	break;
 
 	            default: return STM_ERR_INVALID_ARG;
@@ -227,7 +226,7 @@ stm_err_t GPIO_OUTPUT_CONFIG(GPIO_PORTS ePort, uint8_t nPin, OUTPUT_MODE eMode, 
 		return STM_OK;
 }
 
-stm_err_t GPIO_OUTPUT_WRITE(GPIO_PORTS ePort, uint8_t nPin, logicLevel_t logicLevel){
+stm_err_t GPIO_WRITE(GPIO_PORTS ePort, uint8_t nPin, logicLevel_t logicLevel){
     if (nPin > 15)
     	return STM_ERR_INVALID_SIZE;
 
@@ -251,7 +250,7 @@ stm_err_t GPIO_OUTPUT_WRITE(GPIO_PORTS ePort, uint8_t nPin, logicLevel_t logicLe
     return STM_OK;
 }
 
-stm_err_t GPIO_OUTPUT_TOGGLE(GPIO_PORTS ePort, uint8_t nPin){
+stm_err_t GPIO_TOGGLE(GPIO_PORTS ePort, uint8_t nPin){
     if (nPin > 15)
     	return STM_ERR_INVALID_SIZE;
 
@@ -271,5 +270,19 @@ stm_err_t GPIO_OUTPUT_TOGGLE(GPIO_PORTS ePort, uint8_t nPin){
 	else
 	    *pPortRegister = (1 << (nPin)); // set
 
+	return STM_OK;
+}
+
+stm_err_t GPIO_ConfigPin(GPIO_Direction_t direction, GPIO_Config_t *config){
+	switch (direction) {
+		case GPIO_INPUT: GPIO_INPUT_CONFIG(config->ePort, config->nPin, config->eInput_config);
+			break;
+
+		case GPIO_OUTPUT: GPIO_OUTPUT_CONFIG(config->ePort, config->nPin, config->eOutput_mode, config->eOutput_config);
+			break;
+
+		default: return STM_ERR_INVALID_ARG;
+			break;
+	}
 	return STM_OK;
 }

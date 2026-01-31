@@ -1,9 +1,12 @@
-#include "Blink_led/blink_led.h"
+#include "main.h"
 
 int main(void)
 {
-	if (blink_led_init() != STM_OK) while(1);
-    /* Loop forever */
+	STM_CHECK_ERROR(blink_led_init());
+
+	// Enabling Global Interputs
+	//__enable_irq();
+	/* Loop forever */
 	while(1){
 		blink_led();
 	}

@@ -10,7 +10,15 @@
 stm_err_t blink_led_init(){
 
 	RCC_EnablePeripheral(RCC_GPIOC);
-	stm_err_t err = GPIO_OUTPUT_CONFIG(PORTC, 13, MAX_OUTPUT_SPEED_2MHZ, PUSH_PULL);
+
+	GPIO_Config_t led_config = {
+			.ePort 				= PORTC,
+			.nPin 				= 13,
+			.eOutput_mode 		= MAX_OUTPUT_SPEED_2MHZ,
+			.eOutput_config 	= PUSH_PULL
+	};
+
+	stm_err_t err = GPIO_ConfigPin(GPIO_OUTPUT, &led_config);
 	STM_CHECK_ERROR(err);
 
 	return STM_OK ;
@@ -18,7 +26,7 @@ stm_err_t blink_led_init(){
 
 stm_err_t blink_led(){
 
-	stm_err_t err = GPIO_OUTPUT_TOGGLE(PORTC, 13);
+	stm_err_t err = GPIO_TOGGLE(PORTC, 13);
 	STM_CHECK_ERROR(err);
 	for(int i = 0 ; i < 50000; i++);;
 

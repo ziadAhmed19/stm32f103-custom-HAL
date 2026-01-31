@@ -51,4 +51,22 @@ typedef enum{
 	HIGH
 }logicLevel_t;
 
+typedef enum{
+	GPIO_INPUT,
+	GPIO_OUTPUT
+}GPIO_Direction_t;
+
+typedef struct{
+	GPIO_Direction_t eDirection;
+	GPIO_PORTS		ePort;
+	uint8_t			nPin;
+
+	//INPUT RELATED
+	INPUT_CNF 		eInput_config;
+
+	// OUTPUT RELATED
+	OUTPUT_CNF 		eOutput_config;
+	OUTPUT_MODE 	eOutput_mode;
+}GPIO_Config_t;
+
 #endif /* MCAL_GPIO_GPIO_CONFIG_H_ */
