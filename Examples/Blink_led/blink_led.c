@@ -9,8 +9,6 @@
 
 stm_err_t blink_led_init(){
 
-	RCC_EnablePeripheral(RCC_GPIOC);
-
 	GPIO_Config_t led_config = {
 			.ePort 				= PORTC,
 			.nPin 				= 13,

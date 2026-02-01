@@ -274,6 +274,9 @@ stm_err_t GPIO_TOGGLE(GPIO_PORTS ePort, uint8_t nPin){
 }
 
 stm_err_t GPIO_ConfigPin(GPIO_Direction_t direction, GPIO_Config_t *config){
+
+	RCC_EnablePeripheral(RCC_GPIOC);
+
 	switch (direction) {
 		case GPIO_INPUT: GPIO_INPUT_CONFIG(config->ePort, config->nPin, config->eInput_config);
 			break;

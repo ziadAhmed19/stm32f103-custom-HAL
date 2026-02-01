@@ -5,6 +5,6 @@
  *      Author: ziad-ahmed
  */
 
-#include "USART_Interface.h"
 #include "USART_Private.h"
+#include "USART_Interface.h"
 

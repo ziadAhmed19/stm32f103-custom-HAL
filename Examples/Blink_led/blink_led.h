@@ -10,7 +10,7 @@
 
 #include "stm_err_t.h"
 #include "GPIO_Interface.h"
-#include "RCC_Interface.h"
+
 
 stm_err_t blink_led_init();
 stm_err_t blink_led();

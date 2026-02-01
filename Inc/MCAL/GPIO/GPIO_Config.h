@@ -13,6 +13,7 @@
 #include "BitMath.h"
 #include "stm_err_t.h"
 #include "GPIO_Register.h"
+#include "RCC_Interface.h"
 #include <stdint.h>
 
 // Renaming Ports
