@@ -103,4 +103,37 @@ stm_err_t RCC_ResetPeripheral(RCC_Peripheral_t per){
 	return STM_OK;
 }
 
+stm_err_t RCC_SetSystemClock(RCC_SystemClock clk){
 
+	// Reset the System Clock Switch
+
+	CLR_BITS(RCC_CFGR,0x3,0);
+
+	switch(clk)
+	{
+		case HSI_CLK:
+			SET_BIT(RCC_CR,0);
+			while(!GET_BIT(RCC_CR,1));
+
+			WRITE_BITS(RCC_CFGR,0b00,0);
+			while(((RCC_CFGR >> 2) & 0x3) != 0b00);
+			break;
+
+		case HSE_CLK:
+			SET_BIT(RCC_CR,16);
+			while(!GET_BIT(RCC_CR,17));
+
+			WRITE_BITS(RCC_CFGR,0b01,0);
+			while(((RCC_CFGR >> 2) & 0x3) != 0b01);
+			break;
+
+		default: return STM_ERR_INVALID_ARG; break;
+	}
+	return STM_OK;
+}
+
+uint32_t RCC_GetAPB1Clock(void){
+
+
+
+}

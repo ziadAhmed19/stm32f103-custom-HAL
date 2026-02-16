@@ -26,6 +26,11 @@ typedef enum {
     RCC_TIM2
 } RCC_Peripheral_t;
 
+typedef enum{
+	HSI_CLK,
+	HSE_CLK
+}RCC_SystemClock;
+
 typedef struct {
     volatile uint32_t* en_reg;
     volatile uint32_t* rst_reg;
